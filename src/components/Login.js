@@ -31,7 +31,7 @@ const Login = () => {
       method: "POST",
       headers: {
         "App-Authorizer": 647061697361,
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
