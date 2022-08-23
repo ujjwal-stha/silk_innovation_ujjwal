@@ -6,6 +6,11 @@ const Login = () => {
   //const [userInput, setUserInput] = useState("");
   const [formErrors, setFormErrors] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isShown, setIsSHown] = useState(false);
+
+  const togglePassword = () => {
+    setIsSHown((isShown) => !isShown);
+  };
 
   const handleUserChange = (e) => {
     //const { name, value } = e.target;
@@ -142,8 +147,9 @@ const Login = () => {
 
           <div className="field">
             <label>Password/Pin:</label>
+            
             <input
-              type="password"
+               type={isShown ? "text" : "password"}
               //name="password"
               placeholder="Password/Pin"
               value={formValues.password || formValues.pin}
@@ -151,6 +157,18 @@ const Login = () => {
             />
           </div>
           <p>{formErrors.password}</p>
+
+          <div className="checkbox-container">
+            <label>Show password?</label>
+            
+            <input
+              className="checkbox-input"
+              id="checkbox"
+              type="checkbox"
+              checked={isShown}
+              onChange={togglePassword}
+          />
+          </div>
 
           <button className="fluid ui button blue">SignIn</button>
         </div>
