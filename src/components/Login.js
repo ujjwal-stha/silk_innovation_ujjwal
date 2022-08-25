@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 const Login = () => {
   const initialValues = { email: "", phone: "", password: "", pin: "" };
   const [formValues, setFormValues] = useState(initialValues);
-  //const [userInput, setUserInput] = useState("");
   const [formErrors, setFormErrors] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [isShown, setIsSHown] = useState(false);
@@ -12,7 +11,7 @@ const Login = () => {
     setIsSHown((isShown) => !isShown);
   };
 
-  const handleUserChange = (e) => {
+    const handleUserChange = (e) => {
     //const { name, value } = e.target;
     //setFormValues({ ...formValues, [name]: value });
     const userInput = e.target.value;
@@ -32,7 +31,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // API Call
-    const response = await fetch(`http://103.235.198.52/api/login`, {
+      const response = await fetch(`http://103.235.198.52/api/login`, {
       method: "POST",
       headers: {
         "App-Authorizer": 647061697361,
@@ -57,6 +56,7 @@ const Login = () => {
     } else {
       alert("Invaild Credentials");
     }
+    
   };
 
   useEffect(() => {
@@ -68,55 +68,59 @@ const Login = () => {
 
   const validate = (values) => {
     const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    //  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
+    // /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
+    // /^(?:\d{10}|\w+@\w+\.\w{2,3})$/
+    // ^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})|(^[0-9]{10})+$'
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    if (
-      values.email === formValues.email ||
-      values.phone === formValues.phone
-    ) {
-      if (
-        values.password === formValues.password ||
-        values.pin === formValues.pin
-      ) {
-        console.log("user logged in");
-      } else {
-        console.log("Invalid data");
-      }
-    }
+     //   if (
+  //     values.email === formValues.email ||
+  //     values.phone === formValues.phone
+  //   ) {
+  //     if (
+  //       values.password === formValues.password ||
+  //       values.pin === formValues.pin
+  //     ) {
+  //       console.log("user logged in");
+  //     } else {
+  //       console.log("Invalid data");
+  //     }
+  //   }
+
 
     if (!values.email || !values.phone) {
-      errors.email = "Email  is required!";
-      errors.phone = "Phone no is required";
+      errors.email = "Email is required!";
+      errors.email = "Mobile No. is required!";
     } else if (!regex.test(values.email)) {
       errors.email = "This is not a valid email format!";
-    } else if (values.phone !== 10) {
-      errors.phone = "The length should be 10 digits!";
+    } else if (values.phone.length!== 10) {
+      errors.phone = "Please enter valid mobile number"
     } else if (values.phone !== 984 || values.phone !== 986) {
-      errors.phone = "The NTC prepaid should start with 984 or 986 digits!";
-    } else if (values.phone !== 985) {
-      errors.phone = "The NTC postpaid should start with 985 digits!";
-    } else if (values.phone !== 974 || values.phone !== 975) {
-      errors.phone = "The NTC CDMA should start with 974 or 975 digits!";
-    } else if (
-      values.phone !== 980 ||
-      values.phone !== 981 ||
-      values.phone !== 982
-    ) {
-      errors.phone = "The NCell should start with 980 or 981 or 982 digits!";
-    } else if (values.phone !== 988 || values.phone !== 962) {
-      errors.phone = "The SMARTCELL should start with 988 or 962";
-    } else if (values.phone !== 972) {
-      errors.phone = "The UTL should start with 972";
-    }
+          errors.phone = "The NTC prepaid should start with 984 or 986 digits!";
+        } else if (values.phone !== 985) {
+          errors.phone = "The NTC postpaid should start with 985 digits!";
+        } else if (values.phone !== 974 || values.phone !== 975) {
+          errors.phone = "The NTC CDMA should start with 974 or 975 digits!";
+        } else if (
+          values.phone !== 980 ||
+          values.phone !== 981 ||
+          values.phone !== 982
+        ) {
+          errors.phone = "The NCell should start with 980 or 981 or 982 digits!";
+        } else if (values.phone !== 988 || values.phone !== 962) {
+          errors.phone = "The SMARTCELL should start with 988 or 962";
+        } else if (values.phone !== 972) {
+          errors.phone = "The UTL should start with 972";
+        }
 
     if (!values.password || !values.pin) {
       errors.password = "Password is required!";
-      errors.pin = "pin is required";
-    } else if (values.pin.length < 4) {
-      errors.pin = "Pin must be more than 4 characters";
-    } else if (values.password.length < 6) {
-      errors.password = "Password  must be more than 6 characters";
-    }
+      errors.pin = "Pin No. is required!";
+    } else if (values.password.length < 8 || values.pin.length < 4) {
+      errors.password = "Password must be more than 8 characters";
+      errors.pin = "Pin must be more than 4 character";
+    } 
     return errors;
   };
 
@@ -134,29 +138,32 @@ const Login = () => {
 
         <div className="ui form">
           <div className="field">
-            <label>Email/Phone:</label>
+            <label>Email</label>
             <input
               type="text"
               //name="email"
               placeholder="Email/Phone"
               value={formValues.email || formValues.phone}
               onChange={handleUserChange}
+              required
             />
           </div>
           <p>{formErrors.email}</p>
+          <p>{formErrors.phone}</p>
 
           <div className="field">
-            <label>Password/Pin:</label>
-            
+            <label>Password</label>
             <input
-               type={isShown ? "text" : "password"}
+              type={isShown ? "text" : "password"}
               //name="password"
               placeholder="Password/Pin"
               value={formValues.password || formValues.pin}
               onChange={handlePasswordChange}
+              required
             />
           </div>
           <p>{formErrors.password}</p>
+          <p>{formErrors.pin}</p>
 
           <div className="checkbox-container">
             <label>Show password?</label>
@@ -167,7 +174,7 @@ const Login = () => {
               type="checkbox"
               checked={isShown}
               onChange={togglePassword}
-          />
+            />
           </div>
 
           <button className="fluid ui button blue">SignIn</button>

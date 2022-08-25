@@ -44,3 +44,7 @@ p {
 .checkbox-container {
   margin: 20px 0;
 }
+
+.checkbox-container .checkbox-input {
+  margin: 5px 10px ;
+}
